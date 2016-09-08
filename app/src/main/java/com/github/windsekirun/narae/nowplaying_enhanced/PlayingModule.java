@@ -117,6 +117,7 @@ public class PlayingModule {
                 int artistColumn = cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST);
                 int albumId = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
                 int data = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+                int size = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE);
                 int albumKey = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_KEY);
 
                 while (cursor.moveToNext()) {
@@ -137,7 +138,25 @@ public class PlayingModule {
 
                     musicList.add(file);
                 }
+
+                cursor.close();
             }
+
+            if (!musicList.isEmpty()) {
+                for (PlayingFile playingFile : musicList) {
+                    if (playingFile.getTitle().contains(mNowFile.getTitle())) {
+                        String backupAlbum = playingFile.getAlbum();
+
+                        mNowFile = playingFile;
+                        mNowFile.setAlbum(backupAlbum);
+
+                        break;
+                    }
+                }
+            }
+
+            musicList.clear();
+            musicList.trimToSize();
 
 
             return null;
