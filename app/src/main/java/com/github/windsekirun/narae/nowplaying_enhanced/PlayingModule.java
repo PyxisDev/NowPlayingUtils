@@ -26,6 +26,7 @@ public class PlayingModule {
     BroadcastReceiver receiver;
 
     public static final String LOGTAG = "NaraeNowplaying";
+    public final static Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");      
 
     boolean isDebug = false;
 
@@ -160,18 +161,9 @@ public class PlayingModule {
             
             long toGetAlbumId = mNowFile.getAlbumID();
             
-            Cursor albumArtCursor = context.managedQuery(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, 
-                new String[] {MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART}, 
-                MediaStore.Audio.Albums._ID+ "=?", 
-                new String[] {String.valueOf(toGetAlbumId)}, 
-                null);
-
-            if (albumArtCursor.moveToFirst()) {
-                String path = albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
-                mNowFile.setAlbumArt(Uri.parse(path));
-            }
-            
-            albumArtCursor.close();
+            Uri uri = ContentUris.withAppendedId(sArtworkUri, toGetAlbumId);
+            mNowFile.setAlbumArt(uri);
+            // TODO: Process Return
             return null;
         }
     }
