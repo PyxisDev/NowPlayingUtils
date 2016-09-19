@@ -157,8 +157,21 @@ public class PlayingModule {
 
             musicList.clear();
             musicList.trimToSize();
+            
+            long toGetAlbumId = mNowFile.getAlbumID();
+            
+            Cursor albumArtCursor = context.managedQuery(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, 
+                new String[] {MediaStore.Audio.Albums._ID, MediaStore.Audio.Albums.ALBUM_ART}, 
+                MediaStore.Audio.Albums._ID+ "=?", 
+                new String[] {String.valueOf(toGetAlbumId)}, 
+                null);
 
-
+            if (albumArtCursor.moveToFirst()) {
+                String path = albumArtCursor.getString(albumArtCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+                mNowFile.setAlbumArt(Uri.parse(path));
+            }
+            
+            albumArtCursor.close();
             return null;
         }
     }
