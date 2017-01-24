@@ -2,6 +2,7 @@ package com.github.windsekirun.narae.nowplaying_enhanced;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
